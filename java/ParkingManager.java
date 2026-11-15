@@ -25,7 +25,10 @@ public class ParkingManager {
     private void addRow(int level, String row, int count,
                         ParkingSpace.SpaceType type) {
         for (int number = 1; number <= count; number++) {
-            spaces.add(new ParkingSpace(level, row, number, type));
+            ParkingSpace space = new ParkingSpace(level, row, number, type);
+            spaces.add(space);
+            spaceTree.insert(space);
+            spaceIndex.put(space);
         }
     }
 
@@ -72,13 +75,7 @@ public class ParkingManager {
             }
         }
 
-        ParkingSpace start = null;
-        for (ParkingSpace space : spaces) {
-            if (space.getId().equalsIgnoreCase(startSpaceId.trim())) {
-                start = space;
-                break;
-            }
-        }
+        ParkingSpace start = getSpaceById(startSpaceId);
 
         if (start == null) {
             throw new IllegalArgumentException("Parking space not found.");
@@ -225,7 +222,24 @@ public class ParkingManager {
     public List<String> getHistoryNewestFirst() {
         return history.backward();
     }
+
+    private final ParkingSpaceTree spaceTree = new ParkingSpaceTree();
+    private final SpaceHashTable spaceIndex = new SpaceHashTable(97);
+
+    public ParkingSpace getSpaceById(String id) {
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("Space ID is required.");
+        }
+
+        return spaceIndex.get(
+            id.trim().toUpperCase(java.util.Locale.ROOT));
+    }
+
+    public List<ParkingSpace> getSpacesOrdered() {
+        return spaceTree.inOrder();
+    }
 }
+
 
 
 
