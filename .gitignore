@@ -1,0 +1,10 @@
+﻿# Compiled Java files
+*.class
+
+# Build output
+/build/
+
+# Compiled C++ files
+*.exe
+*.o
+*.obj
