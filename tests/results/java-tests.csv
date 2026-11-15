@@ -1,0 +1,7 @@
+Test,Result,TimeUTC
+Layout and capacity,PASS,2026-11-15T02:01:30.736354100Z
+Input validation and duplicate plates,PASS,2026-11-15T02:01:30.742865Z
+Bus fragmentation and row boundary,PASS,2026-11-15T02:01:30.744863800Z
+Failed movement preserves location,PASS,2026-11-15T02:01:30.745863700Z
+Full capacity and response time,PASS,2026-11-15T02:01:30.762863400Z
+History limit and reverse traversal,PASS,2026-11-15T02:01:30.763865Z
