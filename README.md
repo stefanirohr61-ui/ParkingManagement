@@ -1,4 +1,4 @@
-# Parking Management System
+﻿# Parking Management System
 
 Assessment project for ICTPRG532.
 
@@ -10,7 +10,7 @@ Each level has rows A, B and C.
 | Level | Row A | Row B | Row C |
 |-------|-------|-------|-------|
 | 1 | 5 motorcycle spaces | 10 large spaces | 5 compact spaces |
-| 2 | 5 motorcycle spaces | 5 large spaces | 10 compact spaces |
+| 2 | 5 motorcycle spaces | 10 compact spaces | 5 large spaces |
 | 3 | 5 motorcycle spaces | 10 compact spaces | 5 compact spaces |
 
 ## Parking rules

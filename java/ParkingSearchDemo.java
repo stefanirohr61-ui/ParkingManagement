@@ -6,7 +6,7 @@ public class ParkingSearchDemo {
         VehicleSearch search = new VehicleSearch();
 
         manager.parkVehicle(new Vehicle.Car("CAR123"), "1-C-1");
-        manager.parkVehicle(new Vehicle.Bus("BUS001"), "2-B-1");
+        manager.parkVehicle(new Vehicle.Bus("BUS001"), "2-C-1");
 
         List<String> car = search.findSpaces(manager.getSpaces(), "car123");
         List<String> bus = search.findSpaces(manager.getSpaces(), "BUS001");
@@ -21,7 +21,7 @@ public class ParkingSearchDemo {
         }
 
         if (!bus.equals(List.of(
-                "2-B-1", "2-B-2", "2-B-3", "2-B-4", "2-B-5"))) {
+                "2-C-1", "2-C-2", "2-C-3", "2-C-4", "2-C-5"))) {
             throw new AssertionError("Incorrect bus locations.");
         }
 
@@ -38,3 +38,4 @@ public class ParkingSearchDemo {
         System.out.println("Search checks passed.");
     }
 }
+

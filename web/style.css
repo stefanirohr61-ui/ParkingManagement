@@ -1,0 +1,63 @@
+*{box-sizing:border-box}
+[v-cloak]{display:none}
+body{margin:0;background:#f1f5f9;color:#172b3a;font:15px/1.5 "Segoe UI",Arial,sans-serif}
+header{background:#102f38;color:white;padding:30px 5%;display:flex;justify-content:space-between;align-items:center;gap:20px}
+header a{color:#ccfbf1}
+.eyebrow{font-size:12px;letter-spacing:3px;color:#99f6e4;margin:0}
+h1{font-size:30px;margin:6px 0}
+h2{font-size:20px;margin:0 0 8px}
+h3{font-size:15px;margin:8px 0}
+main{max-width:1600px;margin:auto;padding:25px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.stats article,.panel{background:white;border:1px solid #dbe4eb;border-radius:14px;padding:22px}
+.stats span{display:block;color:#526574}
+.stats strong{display:block;font-size:34px;color:#0f766e}
+.workspace{display:grid;grid-template-columns:300px minmax(0,1fr);gap:22px;align-items:start}
+.muted{color:#526574;font-size:13px}
+label{display:block;font-weight:600;margin:15px 0 5px}
+input,select{width:100%;padding:11px;border:1px solid #94a3b8;border-radius:7px;background:white;color:#172b3a;font:inherit}
+button{font:inherit;border:1px solid transparent;border-radius:7px;padding:10px 12px;background:#0f766e;color:white;cursor:pointer}
+button:hover{filter:brightness(.94)}
+button:disabled{opacity:.5;cursor:wait}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}
+.actions button{font-size:13px}
+.departure{background:#9f3247}
+.secondary{background:white;color:#0f766e;border-color:#0f766e}
+.notice{background:#e6f5f0;padding:12px;border-radius:8px;overflow-wrap:anywhere}
+.notice.error{background:#fff0ef;color:#9f2534}
+.rules{border-top:1px solid #dbe4eb;margin-top:22px;padding-top:12px;font-size:13px}
+.rules p{margin:6px 0}
+.map-heading{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.levels{display:flex;gap:6px;align-items:start}
+.levels button{background:#eef3f6;color:#314757;font-size:13px}
+.levels button.active{background:#0f766e;color:white}
+.legend{display:flex;gap:15px;flex-wrap:wrap;font-size:12px;color:#526574;margin:12px 0}
+.map-scroll{overflow-x:auto}
+.parking-map{display:grid;grid-template-columns:115px minmax(210px,1fr) 115px;grid-template-rows:auto 1fr auto;gap:16px;background:#f8fafc;border:1px solid #dbe4eb;border-radius:12px;padding:18px;min-width:640px}
+.parking-row h3{text-align:center;color:#526574}
+.row-A{grid-column:1;grid-row:2}
+.row-B{grid-column:1 / 4;grid-row:1}
+.row-C{grid-column:3;grid-row:2}
+.space-list{display:grid;gap:7px}
+.row-B .space-list{grid-template-columns:repeat(10,minmax(0,1fr))}
+.space{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;min-height:78px;padding:7px 3px;background:#e8f5ee;color:#214c3b;border:1px solid #9ac6ad;font-size:10px;border-radius:6px}
+.space strong{font-size:12px}
+.space b{font-size:11px;max-width:100%;overflow-wrap:anywhere}
+.space small{font-size:10px}
+.space.occupied{background:#fff0df;border-color:#d4a16b;color:#714116;cursor:grab}
+.space.selected{outline:3px solid #2563eb;outline-offset:1px}
+.space.found{box-shadow:0 0 0 4px #9333ea}
+.circulation{grid-column:2;grid-row:2;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#64748b;text-align:center}
+.circulation svg{width:100%;max-width:270px}
+.circulation span{font-size:13px}
+.ramp{border:1px dashed #94a3b8;padding:9px 15px;border-radius:8px;font-size:12px}
+.entrance{grid-column:1 / 4;grid-row:3;text-align:center;border-top:3px dashed #94a3b8;padding-top:15px;font-weight:700;letter-spacing:3px;color:#526574}
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:10px 7px;border-bottom:1px solid #dbe4eb;overflow-wrap:anywhere}
+.history{max-height:260px;overflow:auto;padding-left:22px;font-size:13px}
+.history li{padding:7px 0;border-bottom:1px solid #edf2f7}
+footer{text-align:center;color:#526574;font-size:12px;padding:25px}
+@media(max-width:1100px){.workspace{grid-template-columns:1fr}.actions{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:650px){main{padding:14px}.stats{grid-template-columns:1fr 1fr}.bottom-grid{grid-template-columns:1fr}.actions{grid-template-columns:1fr 1fr}header{align-items:start;flex-direction:column}h1{font-size:25px}.panel{padding:16px}}

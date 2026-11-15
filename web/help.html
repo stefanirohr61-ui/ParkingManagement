@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Parking Help</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header><h1>Parking help</h1><a href="/">Back to parking</a></header>
+<main>
+<section class="panel">
+    <h2>Park a vehicle</h2>
+    <p>Enter the plate, choose the vehicle type and select a starting space.
+    Click Park vehicle. The plate must not already be parked.</p>
+
+    <h2>Move a vehicle</h2>
+    <p>Click the parked vehicle to select its plate. Select the destination
+    and click Move vehicle. You can also drag the vehicle onto a destination
+    space on the map.</p>
+    <p>To move between levels, select the vehicle, change the displayed level,
+    click the destination space and use Move vehicle.</p>
+
+    <h2>Bus spaces</h2>
+    <p>A bus needs five consecutive large spaces in the same row and level.
+    Select the first space of the group. All five spaces must be available,
+    except spaces already occupied by the same bus during a move.</p>
+    <p>For example, a bus starting at 1-B-3 uses 1-B-3 through 1-B-7.
+    Level 3 has no large spaces and cannot accept a bus.</p>
+
+    <h2>Find a vehicle</h2>
+    <p>Enter the plate and click Find vehicle. The message shows its location.
+    Matching spaces have a purple outline, and the map switches to that level.</p>
+
+    <h2>Vehicle departure</h2>
+    <p>Enter or select the plate and click Vehicle departure.
+    All spaces occupied by that vehicle become available.</p>
+
+    <h2>Map and records</h2>
+    <p>Each space shows Available or Occupied as text.
+    M means motorcycle space, C means compact and L means large.
+    The map is schematic and is not drawn to scale.</p>
+    <p>The vehicle list is sorted by type and plate.
+    Recent activity shows up to 100 successful actions, newest first.</p>
+
+    <h2>Errors and connection</h2>
+    <p>Blocked actions show an error message and keep existing parking records.
+    If the connection fails, check that the Java server is running and click
+    Refresh data.</p>
+    <p>Records are stored in memory and reset when the Java server restarts.</p>
+</section>
+</main>
+</body>
+</html>

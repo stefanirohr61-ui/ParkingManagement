@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Parking Management</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/vendor/vue.global.prod.js" defer></script>
+    <script src="/app.js" defer></script>
+</head>
+<body>
+<div id="app" v-cloak>
+    <header>
+        <div>
+            <p class="eyebrow">PARKING MANAGEMENT</p>
+            <h1>A space for every arrival.</h1>
+        </div>
+        <a href="/help.html" target="_blank" rel="noopener">Help & instructions</a>
+    </header>
+
+    <main>
+        <section class="stats" aria-label="Parking totals">
+            <article><span>Total spaces</span><strong>{{ state.total }}</strong></article>
+            <article><span>Available spaces</span><strong>{{ state.available }}</strong></article>
+            <article><span>Occupied spaces</span><strong>{{ state.total - state.available }}</strong></article>
+            <article><span>Parked vehicles</span><strong>{{ state.vehicles.length }}</strong></article>
+        </section>
+
+        <div class="workspace">
+            <aside class="panel">
+                <h2>Vehicle actions</h2>
+                <p class="muted">Click a space to select it. Click a parked vehicle to select its plate.</p>
+
+                <form @submit.prevent="act('park')">
+                    <label for="plate">Plate number</label>
+                    <input id="plate" v-model="plate" maxlength="30"
+                           placeholder="Example: CAR123" autocomplete="off" required>
+
+                    <label for="type">Vehicle type</label>
+                    <select id="type" v-model="type">
+                        <option>Motorcycle</option>
+                        <option>Car</option>
+                        <option>Bus</option>
+                    </select>
+
+                    <label for="space">Space / destination</label>
+                    <select id="space" v-model="space">
+                        <option v-for="item in state.spaces" :key="item.id" :value="item.id">
+                            {{ item.id }} - {{ item.type }} - {{ item.available ? 'Available' : 'Occupied' }}
+                        </option>
+                    </select>
+
+                    <div class="actions">
+                        <button type="submit" :disabled="busy || !connected">Park vehicle</button>
+                        <button type="button" @click="act('move')" :disabled="busy || !connected">Move vehicle</button>
+                        <button type="button" @click="act('search')" :disabled="busy || !connected">Find vehicle</button>
+                        <button type="button" class="departure" @click="act('depart')"
+                                :disabled="busy || !connected">Vehicle departure</button>
+                    </div>
+                </form>
+
+                <p class="notice" :class="{error: failed}" role="status" aria-live="polite">
+                    {{ message }}
+                </p>
+                <button class="secondary" @click="refresh" :disabled="busy">Refresh data</button>
+
+                <div class="rules">
+                    <h3>Parking rules</h3>
+                    <p>Motorcycle: any space.</p>
+                    <p>Car: compact or large.</p>
+                    <p>Bus: five consecutive large spaces in one row.</p>
+                </div>
+            </aside>
+
+            <section class="panel map-panel">
+                <div class="map-heading">
+                    <div><h2>Parking map</h2><p class="muted">Drag a parked vehicle to its new starting space.</p></div>
+                    <div class="levels" aria-label="Select level">
+                        <button v-for="number in [1,2,3]" :key="number"
+                                :class="{active: level === number}"
+                                :aria-pressed="level === number" @click="level = number">
+                            Level {{ number }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <span>M = Motorcycle space</span>
+                    <span>C = Compact space</span>
+                    <span>L = Large space</span>
+                </div>
+
+                <div class="map-scroll">
+                    <div class="parking-map">
+                        <section v-for="row in ['A','B','C']" :key="row"
+                                 class="parking-row" :class="'row-' + row"
+                                 :aria-label="'Row ' + row">
+                            <h3>Row {{ row }}</h3>
+                            <div class="space-list">
+                                <button v-for="item in rowSpaces(row)" :key="item.id"
+                                        class="space"
+                                        :class="{
+                                            occupied: !item.available,
+                                            selected: space === item.id,
+                                            found: highlight && item.plate === highlight
+                                        }"
+                                        :draggable="!item.available && !busy"
+                                        @dragstart="drag($event, item)"
+                                        @dragover.prevent
+                                        @drop.prevent="drop($event, item)"
+                                        @click="selectSpace(item)"
+                                        :aria-label="spaceLabel(item)">
+                                    <strong>{{ item.id }}</strong>
+                                    <span>{{ shortType(item.type) }}</span>
+                                    <span>{{ item.available ? 'Available' : 'Occupied' }}</span>
+                                    <b v-if="item.plate">{{ item.plate }}</b>
+                                    <small v-if="item.vehicleType">{{ item.vehicleType }}</small>
+                                </button>
+                            </div>
+                        </section>
+
+                        <div class="circulation">
+                            <svg viewBox="0 0 240 180" role="img" aria-label="Schematic circulation lane and level ramps">
+                                <rect x="35" y="25" width="170" height="125" rx="28"
+                                      fill="none" stroke="#cbd5e1" stroke-width="28"/>
+                                <path d="M70 25 H170 M205 65 V115 M170 150 H70 M35 115 V65"
+                                      fill="none" stroke="#fff" stroke-width="3"
+                                      stroke-dasharray="8 8"/>
+                                <path d="M120 15 L135 25 L120 35 M195 85 L205 100 L215 85"
+                                      fill="none" stroke="#64748b" stroke-width="4"/>
+                                <rect x="91" y="66" width="58" height="42" rx="9" fill="#0f766e"/>
+                                <text x="120" y="93" text-anchor="middle" fill="white"
+                                      font-size="19" font-family="sans-serif">P</text>
+                            </svg>
+                            <strong>Circulation lane</strong>
+                            <span>Keep clear</span>
+                            <p class="ramp">Ramps to other levels</p>
+                        </div>
+
+                        <div class="entrance">ENTRANCE / EXIT</div>
+                    </div>
+                </div>
+                <p class="muted">Schematic map. Space sizes and circulation areas are not drawn to scale.</p>
+            </section>
+        </div>
+
+        <div class="bottom-grid">
+            <section class="panel">
+                <h2>Parked vehicles</h2>
+                <p class="muted">Sorted by type, then plate.</p>
+                <p v-if="!state.vehicles.length">No vehicles parked.</p>
+                <table v-else>
+                    <thead><tr><th>Type</th><th>Plate</th><th>Location</th></tr></thead>
+                    <tbody>
+                        <tr v-for="vehicle in state.vehicles" :key="vehicle.plate">
+                            <td>{{ vehicle.type }}</td>
+                            <td>{{ vehicle.plate }}</td>
+                            <td>{{ locations(vehicle.plate) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section class="panel">
+                <h2>Recent activity</h2>
+                <p class="muted">Latest successful actions first. Up to 100 records.</p>
+                <p v-if="!state.history.length">No activity yet.</p>
+                <ol class="history">
+                    <li v-for="(event, index) in state.history" :key="index">{{ event }}</li>
+                </ol>
+            </section>
+        </div>
+        <footer>Local assessment application. Records reset when the Java server restarts.</footer>
+    </main>
+</div>
+</body>
+</html>

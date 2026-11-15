@@ -13,8 +13,8 @@ public class ParkingManager {
 
         // Level 2: 5 motorcycle, 5 large and 10 compact spaces.
         addRow(2, "A", 5, ParkingSpace.SpaceType.MOTORCYCLE);
-        addRow(2, "B", 5, ParkingSpace.SpaceType.LARGE);
-        addRow(2, "C", 10, ParkingSpace.SpaceType.COMPACT);
+        addRow(2, "B", 10, ParkingSpace.SpaceType.COMPACT);
+        addRow(2, "C", 5, ParkingSpace.SpaceType.LARGE);
 
         // Level 3: 5 motorcycle and 15 compact spaces.
         addRow(3, "A", 5, ParkingSpace.SpaceType.MOTORCYCLE);
@@ -239,6 +239,7 @@ public class ParkingManager {
         return spaceTree.inOrder();
     }
 }
+
 
 
 
