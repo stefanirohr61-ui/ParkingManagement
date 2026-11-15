@@ -138,6 +138,72 @@ public class ParkingManager {
 
         return allocation.size();
     }
+
+    public void moveVehicle(String plateNumber, String destinationId) {
+        if (plateNumber == null || plateNumber.isBlank()
+                || destinationId == null || destinationId.isBlank()) {
+            throw new IllegalArgumentException("Plate and destination are required.");
+        }
+
+        String plate = plateNumber.trim().toUpperCase();
+        Vehicle vehicle = null;
+        ParkingSpace destination = null;
+        List<ParkingSpace> currentSpaces = new ArrayList<>();
+
+        for (ParkingSpace space : spaces) {
+            if (!space.isAvailable()
+                    && space.getVehicle().getPlateNumber().equals(plate)) {
+                vehicle = space.getVehicle();
+                currentSpaces.add(space);
+            }
+
+            if (space.getId().equalsIgnoreCase(destinationId.trim())) {
+                destination = space;
+            }
+        }
+
+        if (vehicle == null) {
+            throw new IllegalArgumentException("Vehicle not found.");
+        }
+
+        if (destination == null) {
+            throw new IllegalArgumentException("Destination not found.");
+        }
+
+        List<ParkingSpace> targetSpaces = new ArrayList<>();
+
+        // Validate the complete destination before releasing current spaces.
+        for (int offset = 0; offset < vehicle.getSpacesNeeded(); offset++) {
+            ParkingSpace target = null;
+
+            for (ParkingSpace space : spaces) {
+                if (space.getLevel() == destination.getLevel()
+                        && space.getRow().equals(destination.getRow())
+                        && space.getNumber() == destination.getNumber() + offset) {
+                    target = space;
+                    break;
+                }
+            }
+
+            // A bus may move into some of its own current spaces.
+            if (target == null
+                    || (target.getVehicle() != vehicle && !target.canFit(vehicle))) {
+                throw new IllegalArgumentException(
+                    "Destination unavailable or unsuitable.");
+            }
+
+            targetSpaces.add(target);
+        }
+
+        for (ParkingSpace space : currentSpaces) {
+            space.release();
+        }
+
+        for (ParkingSpace space : targetSpaces) {
+            space.occupy(vehicle);
+        }
+    }
 }
+
 
 
