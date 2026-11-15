@@ -110,6 +110,7 @@ public class ParkingManager {
         for (ParkingSpace space : allocation) {
             space.occupy(vehicle);
         }
+        recordEvent("PARK " + vehicle.getPlateNumber() + " at " + start.getId());
     }
 
     public int removeVehicle(String plateNumber) {
@@ -136,6 +137,7 @@ public class ParkingManager {
             space.release();
         }
 
+        recordEvent("DEPART " + plate);
         return allocation.size();
     }
 
@@ -202,8 +204,29 @@ public class ParkingManager {
         for (ParkingSpace space : targetSpaces) {
             space.occupy(vehicle);
         }
+        recordEvent("MOVE " + plate + " to " + destination.getId());
+    }
+
+    private final DoublyLinkedList<String> history = new DoublyLinkedList<>();
+
+    private void recordEvent(String event) {
+        history.addLast(event);
+
+        // Keep the latest 100 successful actions.
+        if (history.size() > 100) {
+            history.removeFirst();
+        }
+    }
+
+    public List<String> getHistory() {
+        return history.forward();
+    }
+
+    public List<String> getHistoryNewestFirst() {
+        return history.backward();
     }
 }
+
 
 
 
