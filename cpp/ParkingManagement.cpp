@@ -244,6 +244,7 @@ void check(bool condition, const std::string& message) {
     }
 }
 
+#ifndef PARKING_NO_MAIN
 int main() {
     try {
         ParkingManager manager;
@@ -297,3 +298,6 @@ int main() {
         return 1;
     }
 }
+
+#endif
+
